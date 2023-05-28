@@ -1,0 +1,74 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+sensor:
+  - platform: simulated
+    name: room_temperature
+    unit: C
+    amplitude: 0
+    mean: 20
+    spread: 15
+    seed: 666
+    relative_to_epoch: false
+switch:
+  - platform: command_line
+    switches:
+      rlight:
+        command_on: 'echo "ON" > rswitch.txt'
+        command_off: 'echo "OFF" > rswitch.txt'
+      rheater:
+        command_on: 'echo "ON" > rhswitch.txt'
+        command_off: 'echo "OFF" > rhswitch.txt'
+      raircon:
+        command_on: 'echo "ON" > racswitch.txt'
+        command_off: 'echo "OFF" > racswitch.txt'
+light:
+  - platform: switch
+    name: Room Light
+    entity_id: switch.rlight
+climate:
+  - platform: generic_thermostat
+    name: Room Heater
+    heater: switch.rheater
+    target_sensor: sensor.room_temperature
+    min_temp: 15
+    max_temp: 21
+    ac_mode: false
+    target_temp: 17
+    cold_tolerance: 0.3
+    hot_tolerance: 0
+    min_cycle_duration:
+      seconds: 5
+    keep_alive:
+      minutes: 3
+    initial_hvac_mode: "off"
+    away_temp: 16
+    precision: 0.1
+  - platform: generic_thermostat
+    name: Room AirCon
+    heater: switch.raircon
+    target_sensor: sensor.room_temperature
+    min_temp: 15
+    max_temp: 30
+    ac_mode: true
+    target_temp: 22
+    cold_tolerance: 0
+    hot_tolerance: 0.3
+    min_cycle_duration:
+      seconds: 5
+    keep_alive:
+      minutes: 3
+    initial_hvac_mode: "off"
+    away_temp: 16
+    precision: 0.1
