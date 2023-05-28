@@ -1,0 +1,47 @@
+- id: '1684791884297'
+  alias: Smart Home Profile - Shaurya
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: iot/test
+    payload: Shaurya
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.spotify_shaurbhai
+    data:
+      media_content_id: spotify:playlist:37i9dQZF1E37pWJVr3MraR
+      media_content_type: spotify://playlist
+    metadata:
+      title: Daily Mix 1
+      thumbnail: https://dailymix-images.scdn.co/v2/img/ab6761610000e5eb75348e1aade2645ad9c58829/1/en/large
+      media_class: playlist
+      children_media_class: track
+      navigateIds:
+      - {}
+      - media_content_type: spotify://current_user_playlists
+        media_content_id: current_user_playlists
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 246
+      - 97
+      - 81
+    target:
+      entity_id: light.room_light
+  - service: climate.turn_on
+    data: {}
+    target:
+      entity_id:
+      - climate.room_heater
+      - climate.room_aircon
+  - service: climate.set_temperature
+    data:
+      hvac_mode: auto
+      temperature: 18
+    target:
+      entity_id:
+      - climate.room_heater
+      - climate.room_aircon
+  mode: single
